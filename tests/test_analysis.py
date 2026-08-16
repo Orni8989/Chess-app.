@@ -82,3 +82,9 @@ def test_account_api_includes_rating_fields(app, client):
     account = client.get("/api/accounts").get_json()["accounts"][0]
     assert "blitz_rating" in account
     assert "rapid_rating" in account
+
+
+def test_default_accounts_are_always_seeded(client):
+    accounts = client.get("/api/accounts").get_json()["accounts"]
+    defaults = {account["username"] for account in accounts if account["is_default"]}
+    assert defaults == {"dsfgreherfdg", "woods89"}

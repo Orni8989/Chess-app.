@@ -69,11 +69,12 @@ h2 { font-size: 28px; }
 .chip.selected::before { background: #64a571; }
 .account-card { min-width: 250px; display: grid; gap: 10px; padding: 11px 13px; border-radius: 10px; text-align: left; }
 .account-card::before { display: none; }
-.account-card-top { display: grid; grid-template-columns: auto 1fr auto; gap: 7px; align-items: center; }
+.account-card-top { display: grid; grid-template-columns: auto auto 1fr auto; gap: 7px; align-items: center; }
 .account-card-top strong { color: var(--ink); font-size: 13px; }
-.account-card-top > small { color: var(--muted); font-size: 10px; font-weight: 600; }
+.account-card-top > small { grid-column: 4; color: var(--muted); font-size: 10px; font-weight: 600; }
 .account-indicator { width: 8px; height: 8px; border-radius: 50%; background: #c3c9c4; }
 .account-card.selected .account-indicator { background: #4e9662; box-shadow: 0 0 0 3px rgba(78,150,98,.12); }
+.primary-badge { grid-column: 3; justify-self: start; padding: 2px 6px; color: var(--forest-2); border-radius: 999px; background: rgba(35,90,71,.1); font-size: 8px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
 .account-ratings { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
 .account-ratings > span { display: grid; grid-template-columns: 1fr auto; align-items: baseline; padding: 7px 8px; border: 1px solid rgba(35,63,51,.09); border-radius: 7px; background: rgba(255,255,255,.65); }
 .account-ratings small { color: var(--muted); font-size: 9px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }

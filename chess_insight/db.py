@@ -16,7 +16,8 @@ CREATE TABLE IF NOT EXISTS accounts (
     blitz_rating INTEGER,
     blitz_rating_date TEXT,
     rapid_rating INTEGER,
-    rapid_rating_date TEXT
+    rapid_rating_date TEXT,
+    is_default INTEGER NOT NULL DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS games (
@@ -89,9 +90,20 @@ def init_db():
         "blitz_rating_date": "TEXT",
         "rapid_rating": "INTEGER",
         "rapid_rating_date": "TEXT",
+        "is_default": "INTEGER NOT NULL DEFAULT 0",
     }.items():
         if name not in existing:
             db.execute(f"ALTER TABLE accounts ADD COLUMN {name} {sql_type}")
+    defaults = current_app.config.get("DEFAULT_CHESSCOM_ACCOUNTS", ())
+    for username in defaults:
+        db.execute(
+            """
+            INSERT INTO accounts (username, display_name, is_default)
+            VALUES (?, ?, 1)
+            ON CONFLICT(username) DO UPDATE SET is_default = 1
+            """,
+            (username.casefold(), username),
+        )
     db.commit()
 
 

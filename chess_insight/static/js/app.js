@@ -1,4 +1,4 @@
-const state = { accounts: [], selectedAccounts: new Set(), accountsInitialized: false, color: "white", path: [] };
+const state = { accounts: [], selectedAccounts: new Set(), disabledAccounts: new Set(), accountsInitialized: false, color: "white", path: [] };
 const ALL_GAMES_START = "2010-01-01";
 
 function qs(id) { return document.getElementById(id); }
@@ -56,7 +56,9 @@ async function loadAccounts() {
   const validIds = new Set(payload.accounts.map(account => account.id));
   state.selectedAccounts = new Set([...state.selectedAccounts].filter(id => validIds.has(id)));
   payload.accounts.forEach(account => {
-    if (!state.accountsInitialized || !previousIds.has(account.id)) state.selectedAccounts.add(account.id);
+    if ((!state.accountsInitialized || !previousIds.has(account.id)) && !state.disabledAccounts.has(account.username.toLowerCase())) {
+      state.selectedAccounts.add(account.id);
+    }
   });
   state.accountsInitialized = true;
   renderAccounts();
@@ -73,7 +75,7 @@ function renderAccounts() {
     return;
   }
   holder.innerHTML = state.accounts.map(account => `<button class="chip account-card ${state.selectedAccounts.has(account.id) ? "selected" : ""}" data-account="${account.id}" aria-pressed="${state.selectedAccounts.has(account.id)}" title="${state.selectedAccounts.has(account.id) ? "Included in analysis" : "Excluded from analysis"}">
-    <span class="account-card-top"><span class="account-indicator"></span><strong>${account.display_name}</strong><small>${account.game_count} games</small></span>
+    <span class="account-card-top"><span class="account-indicator"></span><strong>${account.display_name}</strong>${account.is_default ? '<span class="primary-badge">My account</span>' : ''}<small>${account.game_count} games</small></span>
     <span class="account-ratings">
       <span><small>Blitz</small><strong>${account.blitz_rating ?? "—"}</strong><em>${account.blitz_rating_date ?? "Not synced"}</em></span>
       <span><small>Rapid</small><strong>${account.rapid_rating ?? "—"}</strong><em>${account.rapid_rating_date ?? "Not synced"}</em></span>
@@ -81,7 +83,15 @@ function renderAccounts() {
   </button>`).join("");
   holder.querySelectorAll(".chip").forEach(chip => chip.addEventListener("click", async () => {
     const id = Number(chip.dataset.account);
-    state.selectedAccounts.has(id) ? state.selectedAccounts.delete(id) : state.selectedAccounts.add(id);
+    const account = state.accounts.find(item => item.id === id);
+    if (state.selectedAccounts.has(id)) {
+      state.selectedAccounts.delete(id);
+      state.disabledAccounts.add(account.username.toLowerCase());
+    } else {
+      state.selectedAccounts.add(id);
+      state.disabledAccounts.delete(account.username.toLowerCase());
+    }
+    localStorage.setItem("chess-insight-disabled-accounts", JSON.stringify([...state.disabledAccounts]));
     state.path = [];
     renderAccounts();
     await refreshPage();
@@ -266,6 +276,11 @@ function bindUI() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    state.disabledAccounts = new Set(JSON.parse(localStorage.getItem("chess-insight-disabled-accounts") || "[]"));
+  } catch (_error) {
+    state.disabledAccounts = new Set();
+  }
   if (localStorage.getItem("chess-insight-sidebar") === "collapsed" && !window.matchMedia("(max-width: 760px)").matches) {
     document.body.classList.add("sidebar-collapsed");
   }
