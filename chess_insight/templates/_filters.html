@@ -1,0 +1,24 @@
+<section class="filters" aria-label="Analysis filters">
+  <div class="filter-group account-filter">
+    <span class="filter-label">Accounts</span>
+    <div id="account-chips" class="chips"><span class="muted">No accounts imported</span></div>
+  </div>
+  <label class="filter-control"><span>Period</span>
+    <select id="filter-period">
+      <option value="all" selected>All games</option>
+      <option value="custom">Custom dates</option>
+    </select>
+  </label>
+  <label class="filter-control"><span>From</span><input type="date" id="filter-start"></label>
+  <label class="filter-control"><span>To</span><input type="date" id="filter-end"></label>
+  <label class="filter-control"><span>Speed</span>
+    <select id="filter-speed">
+      <option value="">All games</option>
+      <option value="bullet">Bullet</option>
+      <option value="blitz">Blitz</option>
+      <option value="rapid">Rapid</option>
+      <option value="daily">Daily</option>
+    </select>
+  </label>
+  <button class="button button-quiet" id="apply-filters">Apply</button>
+</section>

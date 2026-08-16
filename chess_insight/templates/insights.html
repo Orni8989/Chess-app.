@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Decision Points · Chess Insight{% endblock %}
+{% block content %}
+<div class="page-wrap">
+  <section class="page-heading insights-heading">
+    <div>
+      <span class="eyebrow">Find your leverage</span>
+      <h1>Decision points</h1>
+      <p>The opening positions where your choice of move changed the result most.</p>
+    </div>
+  </section>
+
+  {% include "_filters.html" %}
+
+  <section class="insight-controls panel-inline">
+    <label><span>Analyze</span><select id="depth"><option value="8">4 moves deep</option><option value="12" selected>6 moves deep</option><option value="16">8 moves deep</option><option value="20">10 moves deep</option></select></label>
+    <label><span>Minimum sample</span><input id="minimum" type="number" min="1" max="500" value="15"><small>games per move</small></label>
+    <button class="button button-primary" id="run-insights">Find decision points</button>
+  </section>
+
+  <section class="insight-intro">
+    <div><span id="insight-count">—</span><p>meaningful positions found</p></div>
+    <p>Ranked by the gap in expected points between your best and worst frequently played moves.</p>
+  </section>
+
+  <div id="insights-list" class="insights-list">
+    <section class="panel empty-state"><span class="empty-icon">♙</span><h2>Your patterns will appear here</h2><p>Import games, then run the analysis to compare your recurring choices.</p></section>
+  </div>
+</div>
+{% endblock %}

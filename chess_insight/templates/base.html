@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Personal Chess.com opening analysis, built around your own games.">
+  <title>{% block title %}Chess Insight{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+</head>
+<body data-page="{{ page }}">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <button type="button" class="sidebar-toggle" id="hide-sidebar" aria-label="Hide sidebar" title="Hide sidebar">‹</button>
+      <a class="brand" href="/" aria-label="Chess Insight home">
+        <span class="brand-mark">♞</span>
+        <span><strong>Chess</strong> Insight</span>
+      </a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="/" class="{{ 'active' if page == 'explorer' else '' }}"><span>⌁</span> Opening explorer</a>
+        <a href="/insights" class="{{ 'active' if page == 'insights' else '' }}"><span>↗</span> Decision points</a>
+      </nav>
+      <div class="sidebar-note">
+        <span class="eyebrow">Your database</span>
+        <strong id="sidebar-game-count">No games yet</strong>
+        <p>Games stay on this computer.</p>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button type="button" class="mobile-menu" aria-label="Open navigation" title="Show sidebar">☰</button>
+        <div class="account-summary">
+          <span class="status-dot"></span>
+          <span id="account-summary">Local database</span>
+        </div>
+        <button class="button button-primary" id="open-sync">＋ Add games</button>
+      </header>
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  <dialog id="sync-dialog">
+    <form method="dialog" class="dialog-card" id="sync-form">
+      <button type="button" class="dialog-close" id="close-sync" aria-label="Close">×</button>
+      <span class="eyebrow">Chess.com import</span>
+      <h2>Add an account</h2>
+      <p>We’ll save its games locally. Future syncs only recheck the newest archive.</p>
+      <label>Chess.com username
+        <input id="sync-username" name="username" value="dsfgreherfdg" autocomplete="off" required>
+      </label>
+      <label class="all-games-option">
+        <input type="checkbox" id="sync-all-games" checked>
+        <span><strong>All games</strong><small>January 1, 2010 through today</small></span>
+      </label>
+      <div class="date-row">
+        <label>From <input type="date" id="sync-start" name="start"></label>
+        <label>Through <input type="date" id="sync-end" name="end"></label>
+      </div>
+      <div class="dialog-message" id="sync-message" role="status"></div>
+      <button type="submit" class="button button-primary button-wide">Import games</button>
+    </form>
+  </dialog>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+</body>
+</html>

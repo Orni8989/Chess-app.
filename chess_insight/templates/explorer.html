@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Opening Explorer · Chess Insight{% endblock %}
+{% block content %}
+<div class="page-wrap">
+  <section class="page-heading">
+    <div>
+      <span class="eyebrow">Your repertoire, in evidence</span>
+      <h1>Opening explorer</h1>
+      <p>Follow the moves you actually play and see where the points come from.</p>
+    </div>
+    <div class="color-toggle" role="group" aria-label="Your color">
+      <button data-color="white" class="active"><i class="piece piece-white"></i> White</button>
+      <button data-color="black"><i class="piece piece-black"></i> Black</button>
+    </div>
+  </section>
+
+  {% include "_filters.html" %}
+
+  <section class="stats-grid" id="overview-stats">
+    <article><span>Games in view</span><strong>—</strong><small>Selected filters</small></article>
+    <article><span>Win rate</span><strong>—</strong><small>Your results</small></article>
+    <article><span>Draw rate</span><strong>—</strong><small>Your results</small></article>
+    <article class="accent-stat"><span>Expected points</span><strong>—</strong><small>Per game</small></article>
+  </section>
+
+  <section class="explorer-panel panel">
+    <div class="panel-header">
+      <div>
+        <span class="eyebrow" id="turn-label">Your move</span>
+        <h2 id="position-title">Starting position</h2>
+      </div>
+      <button class="text-button" id="reset-path" disabled>Reset line</button>
+    </div>
+    <div id="move-path" class="move-path" aria-label="Selected move sequence"></div>
+    <div class="explorer-workspace">
+      <div class="board-section">
+        <div class="board-shell">
+          <div id="chess-board" class="chess-board" role="img" aria-label="Current chess position"></div>
+        </div>
+        <div class="board-details">
+          <h2 id="board-title">Starting position</h2>
+        </div>
+      </div>
+      <div class="table-wrap move-list-wrap">
+        <table class="moves-table">
+          <thead><tr><th>Move</th><th>Games</th><th>Results</th><th>Points</th></tr></thead>
+          <tbody id="moves-body"><tr><td colspan="4" class="empty-cell">Import an account to begin exploring.</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

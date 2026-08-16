@@ -1,0 +1,1 @@
+The app should use python as a backend with flask. The frontend should be java html, css and JavaScript. The git reposotory I have created for this app is: https://github.com/Orni8989/Chess-app..git. You should first run the app on local host but I will want too deploy my app with vercel later.
